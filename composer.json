@@ -1,5 +1,5 @@
 {
-    "name": "tpg/extjs-bundle",
+    "name": "tecnocreaciones/extjs-bundle",
     "type": "symfony-bundle",
     "description": "Use ExtJs with Symfony 2",
     "keywords": ["extjs", "bundle", "symfony2"],
