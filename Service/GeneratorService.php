@@ -142,6 +142,7 @@ class GeneratorService {
             'name' => $this->convertNaming($property->getName()),
             'type' => 'string',
         );
+        
         $association = array();
         $validators = array();
         $skipValidator = false;
@@ -160,6 +161,9 @@ class GeneratorService {
             switch(get_class($annotation)) {
                 case 'Tpg\ExtjsBundle\Annotation\Model\Field':
                     $field['type'] = $annotation->type;
+                    if($annotation->mapping != ''){
+                        $field['mapping'] = $annotation->mapping;
+                    }
                     break;
                 case 'Doctrine\ORM\Mapping\Id':
                 case 'Doctrine\ODM\MongoDB\Mapping\Annotations\Id':
