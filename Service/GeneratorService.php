@@ -164,6 +164,9 @@ class GeneratorService {
                     if($annotation->mapping != ''){
                         $field['mapping'] = $annotation->mapping;
                     }
+                    if ($field['type'] === "date") {
+                        $field['dateReadFormat'] = 'Y-m-d H:i:s';
+                    }
                     break;
                 case 'Doctrine\ORM\Mapping\Id':
                 case 'Doctrine\ODM\MongoDB\Mapping\Annotations\Id':
@@ -198,7 +201,8 @@ class GeneratorService {
                 case 'Doctrine\ORM\Mapping\Column':
                     $field['type'] = $this->getColumnType($annotation->type);
                     if ($field['type'] === "date") {
-                        $field['dateFormat'] = \DateTime::ISO8601;
+                        $field['dateFormat'] = 'Y-m-d H:i:s';
+                        $field['dateReadFormat'] = 'Y-m-d H:i:s';
                     }
                     $validators[] = array('type'=>'presence', 'field'=>$this->convertNaming($property->getName()));
                     break;
@@ -209,7 +213,7 @@ class GeneratorService {
                     if (stripos($annotation->name, "DateTime") === 0) {
                         $type = $annotation->name;
                         if ($type === "DateTime") {
-                            $field['dateFormat'] = \DateTime::ISO8601;
+                            $field['dateFormat'] = 'Y-m-d H:i:s';
                         } else {
                             $format = explode(',',
                                 substr(
