@@ -76,7 +76,11 @@ Ext.define("{{ name }}", {
             type: 'belongsTo',
             name: '{{ assoc.name }}',
             associationKey: '{{ assoc.name }}',
-            foreignKey: '{{ assoc.key }}',
+            {% set foreignKey = ''%}
+            {% if assoc.key is defined %}
+                {% set foreignKey = assoc.key %}
+            {% endif %}
+            foreignKey: '{{ foreignKey }}',
             instanceName: '{{ assoc.name }}',
             model: '{{ assoc.model }}',
             getterName: 'get{{ assoc.name|ucfirst }}',
