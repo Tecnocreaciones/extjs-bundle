@@ -120,14 +120,30 @@ class GeneratorService {
                 }
                 $this->buildPropertyAnnotation($property, $structure);
             }
+            
             $this->removeDuplicate($structure['validators']);
+            $this->buildUses($structure);
+            
             return $this->twig->render('TpgExtjsBundle:ExtjsMarkup:model.js.twig', $structure);
         } else {
             return "";
         }
     }
+    
+    private function buildUses(&$structure){
+        $associations = $structure['associations'];
+        $uses = $usesModel = array();
+       
+        foreach ($associations as $association) {
+            if(!in_array($association['model'], $uses)){
+                $uses[] = $association['model'];
+                $usesModel[] = $association;
+            }
+        }
+        $structure['uses'] = $usesModel;
+    }
 
-    protected function convertNaming($name) {
+        protected function convertNaming($name) {
         return $name;
     }
 
@@ -204,7 +220,9 @@ class GeneratorService {
                         $field['dateFormat'] = 'Y-m-d H:i:s';
                         $field['dateReadFormat'] = 'Y-m-d H:i:s';
                     }
-                    $validators[] = array('type'=>'presence', 'field'=>$this->convertNaming($property->getName()));
+                    if($annotation->nullable == 0){
+                        $validators[] = array('type'=>'presence', 'field'=>$this->convertNaming($property->getName()));
+                    }
                     break;
                 case 'JMS\Serializer\Annotation\SerializedName':
                     $field['name'] = $annotation->name;

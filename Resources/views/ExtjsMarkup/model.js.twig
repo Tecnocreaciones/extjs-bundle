@@ -1,7 +1,7 @@
 Ext.define("{{ name }}", {
     extend: "{{ extend }}",
     uses: [
-        {%- for assoc in associations %}
+        {%- for assoc in uses %}
 
         '{{ assoc.model }}'
         {%- if not loop.last %},{% endif %}
